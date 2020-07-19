@@ -184,7 +184,7 @@ def train(config, gen, disc_f, disc_h, disc_j, model_en, train_data,layer_model,
                 train_data = train_data[0:5000]
                 withcov = True                                  
         train_epoch(train_data, gen,disc_f, disc_h, disc_j, model_en, disc_optimizer, gen_en_optimizer, metric_loss_disc,
-                    metric_loss_gen_en, config.train_batch_size, config.num_cont_noise, config,withcov,layer_model,threshold,layer_to_compute,model_layer_dict)
+                    metric_loss_gen_en, config.train_batch_size, config.num_cont_noise, config,withcov,layer_model,layer_to_compute,model_layer_dict)
         epoch_time = time.time()-start_time
 
         # Save results
@@ -202,16 +202,16 @@ def train(config, gen, disc_f, disc_h, disc_j, model_en, train_data,layer_model,
             tf.summary.image('Generated Images', tf.expand_dims(gen_image,axis=0),step=epoch)
 
 def train_epoch(train_data, gen,disc_f, disc_h, disc_j, model_en, disc_optimizer,gen_en_optimizer,
-                metric_loss_disc, metric_loss_gen_en, batch_size, cont_dim, config,withcov = False,layer_model,threshold,layer_to_compute,model_layer_dict):
+                metric_loss_disc, metric_loss_gen_en, batch_size, cont_dim, config,withcov = False,layer_model,layer_to_compute,model_layer_dict):
     for image, label in train_data:
         if not config.conditional:
             label = None
         train_step(image, label, gen, disc_f, disc_h, disc_j, model_en, disc_optimizer, gen_en_optimizer,
-                   metric_loss_disc, metric_loss_gen_en, batch_size, cont_dim, config,withcov,layer_model,threshold,layer_to_compute,model_layer_dict)
+                   metric_loss_disc, metric_loss_gen_en, batch_size, cont_dim, config,withcov,layer_model,layer_to_compute,model_layer_dict)
 
 @tf.function
 def train_step(image, label, gen, disc_f, disc_h, disc_j, model_en, disc_optimizer, gen_en_optimizer, metric_loss_disc,
-               metric_loss_gen_en, batch_size, cont_dim, config, withcov = False,layer_model,threshold,layer_to_compute,model_layer_dict):
+               metric_loss_gen_en, batch_size, cont_dim, config, withcov = False,layer_model,layer_to_compute,model_layer_dict):
     print('Graph will be traced...')
     
     with tf.device('{}:*'.format(config.device)):
@@ -230,11 +230,11 @@ def train_step(image, label, gen, disc_f, disc_h, disc_j, model_en, disc_optimiz
                     ori_dis_loss = disc_loss(real_f_score, real_h_score, real_j_score, fake_f_score, fake_h_score, fake_j_score)
                     ori_g_e_loss = gen_en_loss(real_f_score, real_h_score, real_j_score, fake_f_score, fake_h_score, fake_j_score)                            
                     if withcov :
-                        update_coverage(fake_img[0],layer_model,threshold,layer_to_compute,model_layer_dict)
+                        update_coverage(fake_img[0],layer_model,config.threshold,layer_to_compute,model_layer_dict)
                         neural_loss = 1-neuron_cov(model_layer_dict)[2]
                         
-                     d_loss = ori_dis_loss + labmda * neural_loss
-                     g_e_loss = ori_g_e_loss + labmda * neural_loss
+                     d_loss = ori_dis_loss + config.lambda * neural_loss
+                     g_e_loss = ori_g_e_loss + config.lambda * neural_loss
 
             grad_disc = disc_tape.gradient(d_loss, disc_f.trainable_variables+disc_h.trainable_variables+disc_j.trainable_variables)
 
