@@ -39,7 +39,7 @@ def set_up_train(config):
     input_tensor = Input(shape=input_shape)
     model1 = cifar10vgg(input_tensor=input_tensor)
     model1.load_weights("cifar10vgg.h5")
-    threshold=0.45
+    
     layer_to_compute = layer_names(model1)
     layer_model = compose_layer_model(model1,layer_to_compute)
     model_layer_dict = set_cov_dict(model1)
@@ -50,7 +50,7 @@ def set_up_train(config):
           disc_j=model_discriminator_j,
           model_en=model_encoder,
           train_data=train_data,
-          layer_model,threshold,layer_to_compute,model_layer_dict
+          layer_model,layer_to_compute,model_layer_dict
           )
     # Finished
     logging.info('Training finished ;)')
