@@ -163,8 +163,8 @@ def train(config, gen, disc_f, disc_h, disc_j, model_en, train_data,layer_model,
 
 
     # Define Logging to Tensorboard
-    summary_writer = tf.summary.create_file_writer(f'{config.result_path}/{config.model}_{config.dataset}_{time.strftime("%Y-%m-%d--%H-%M-%S")}')
-
+    
+    summary_writer = tf.summary.create_file_writer('cifar_bigGAN_snapshots_1/')
     fixed_z, fixed_c = get_fixed_random(config, num_to_generate=100)  # fixed_noise is just used for visualization.
 
     # Define metric
