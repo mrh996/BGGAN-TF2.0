@@ -14,6 +14,7 @@ flags.DEFINE_integer('num_classes', 10, 'Numbers of classes in the dataset')
 flags.DEFINE_string('dataset_path', './tensorflow_datasets','Path for saving dataset.')
 flags.DEFINE_string('result_path', './results','Path for saving results.')
 flags.DEFINE_integer('logging_step',100,'Step number for logging')
+
 flags.DEFINE_integer('data_buffer_size',1000,'Buffersize input pipeline.')
 flags.DEFINE_integer('train_batch_size',256 ,'Batch size for training.')
 flags.DEFINE_bool('cache_dataset', False, 'cache dataset (True|False).')
@@ -33,11 +34,11 @@ flags.DEFINE_float('beta_2_disc',0.999,'Beta_2 of discriminator optimizer.')
 flags.DEFINE_integer('D_G_ratio', 2, 'Ratio of upgrading weights, discriminator VS generator & encoder')
 
 flags.DEFINE_integer('num_epochs', 50 ,'Number of epochs to train.')
-
 flags.DEFINE_integer('num_cont_noise', 100, 'Dimension of continous noise vector.')
 flags.DEFINE_bool('conditional', True, 'Conditional or unconditional GAN')
 flags.DEFINE_integer('num_emb', 32, 'Dimension of embedded label output. Only applicable when conditional')
-
+flags.DEFINE_integer('lambda',100,'parameter for neuron coverage')
+flags.DEFINE_integer('threshold',0.45,'threshold to calculate neuron coverage')
 
 def main(argv):
     del argv  # Unused.
