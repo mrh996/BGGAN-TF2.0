@@ -50,7 +50,9 @@ def set_up_train(config):
           disc_j=model_discriminator_j,
           model_en=model_encoder,
           train_data=train_data,
-          layer_model,layer_to_compute,model_layer_dict
+          layer_model = layer_model,
+          layer_to_compute = layer_to_compute,
+          model_layer_dict = model_layer_dict
           )
     # Finished
     logging.info('Training finished ;)')
