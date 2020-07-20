@@ -37,7 +37,7 @@ flags.DEFINE_integer('num_epochs', 50 ,'Number of epochs to train.')
 flags.DEFINE_integer('num_cont_noise', 100, 'Dimension of continous noise vector.')
 flags.DEFINE_bool('conditional', True, 'Conditional or unconditional GAN')
 flags.DEFINE_integer('num_emb', 32, 'Dimension of embedded label output. Only applicable when conditional')
-flags.DEFINE_integer('lambda',100,'parameter for neuron coverage')
+flags.DEFINE_integer('Lambda',100,'parameter for neuron coverage')
 flags.DEFINE_integer('threshold',0.45,'threshold to calculate neuron coverage')
 
 def main(argv):
