@@ -164,8 +164,8 @@ def train(config, gen, disc_f, disc_h, disc_j, model_en, train_data,layer_model,
 
     # Define Logging to Tensorboard
     
-    summary_writer = tf.summary.create_file_writer('cifar_bigGAN_snapshots_1/')
-    fixed_z, fixed_c = get_fixed_random(config, num_to_generate=100)  # fixed_noise is just used for visualization.
+    summary_writer = tf.summary.create_file_writer('cifar_BigGAN_snapshots_1/')
+    #fixed_z, fixed_c = get_fixed_random(config, num_to_generate=100)  # fixed_noise is just used for visualization.
 
     # Define metric
     metric_loss_gen_en = tf.keras.metrics.Mean()
@@ -197,9 +197,9 @@ def train(config, gen, disc_f, disc_h, disc_j, model_en, train_data,layer_model,
 
         metric_loss_disc.reset_states()
         # Generated images and reconstructed images
-        gen_image  = generate_images(gen, fixed_z, fixed_c, config)
-        with summary_writer.as_default():
-            tf.summary.image('Generated Images', tf.expand_dims(gen_image,axis=0),step=epoch)
+        #gen_image  = generate_images(gen, fixed_z, fixed_c, config)
+        #with summary_writer.as_default():
+            #tf.summary.image('Generated Images', tf.expand_dims(gen_image,axis=0),step=epoch)
 
 def train_epoch(train_data, gen,disc_f, disc_h, disc_j, model_en, disc_optimizer,gen_en_optimizer,
                 metric_loss_disc, metric_loss_gen_en, batch_size, cont_dim, config,withcov = False,layer_model,layer_to_compute,model_layer_dict):
@@ -232,7 +232,8 @@ def train_step(image, label, gen, disc_f, disc_h, disc_j, model_en, disc_optimiz
                     if withcov :
                         update_coverage(fake_img[0],layer_model,config.threshold,layer_to_compute,model_layer_dict)
                         neural_loss = 1-neuron_cov(model_layer_dict)[2]
-                        
+                        with summary_writer.as_default():
+                            tf.summary.image('Generated Images', tf.expand_dims(fake_img,axis=0),step=epoch)
                      d_loss = ori_dis_loss + config.lambda * neural_loss
                      g_e_loss = ori_g_e_loss + config.lambda * neural_loss
 
