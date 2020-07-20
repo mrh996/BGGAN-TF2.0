@@ -6,7 +6,7 @@ FLAGS = flags.FLAGS
 
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 flags.DEFINE_string("model", 'BigBiGAN', 'Model to use (BigBiGAN|')
 flags.DEFINE_string("dataset",'mnist','Dataset (mnist|fashion_mnist|cifar10)')
@@ -44,9 +44,9 @@ def main(argv):
     del argv  # Unused.
     set_up_train(FLAGS)
     if not os.path.exists('cifar_BigGAN_snapshots_1/'): #初始化训练过程中的可视化结果的输出文件夹
-    os.makedirs('cifar_BigGAN_snapshots_1/')
+        os.makedirs('cifar_BigGAN_snapshots_1/')
     if not os.path.exists('cifar_BigGAN_out_1/'): #初始化训练过程中的模型保存文件夹
-    os.makedirs('cifar_BigGAN_out_1/')
+        os.makedirs('cifar_BigGAN_out_1/')
 
 
 if __name__ == '__main__':
